@@ -1,0 +1,40 @@
+.logo-glow {
+  position: relative;
+}
+
+.logo-glow::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(45deg, #10b981, #06b6d4);
+  border-radius: 8px;
+  filter: blur(8px);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+  z-index: -1;
+}
+
+.logo-glow:hover::before {
+  opacity: 0.3;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 2px rgb(34 197 94 / 0.5);
+  transition: box-shadow 150ms ease-in-out;
+}
+
+.focus-ring:focus {
+  box-shadow: 0 0 0 3px rgb(34 197 94 / 0.5), 0 0 0 1px rgb(255 255 255);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
