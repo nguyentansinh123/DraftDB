@@ -2,3 +2,7 @@
 
 @variant dark (&:where(.dark, .dark *));
 @variant light (&:where(.light, .light *));
+::selection {
+  background-color: #088d39;
+  color: white;
+}
