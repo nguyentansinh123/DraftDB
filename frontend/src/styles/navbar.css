@@ -38,3 +38,26 @@ html {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+.light .gradient-text {
+  background: linear-gradient(135deg, #059669, #0891b2);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.light .logo-glow::before {
+  background: linear-gradient(45deg, #047857, #0e7490);
+  opacity: 0;
+}
+
+.light .logo-glow:hover::before {
+  opacity: 0.5;
+}
+
+.light .focus-ring {
+  box-shadow: 0 0 0 2px rgb(5 150 105 / 0.6);
+}
+
+.light .focus-ring:focus {
+  box-shadow: 0 0 0 3px rgb(5 150 105 / 0.6), 0 0 0 1px rgb(255 255 255);
+}

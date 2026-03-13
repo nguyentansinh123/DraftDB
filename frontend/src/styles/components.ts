@@ -58,8 +58,11 @@ export const components = {
       primary: clsx(
         tokens.borderRadius.button,
         "bg-gradient-to-r from-green-600 to-cyan-600 text-white",
-        "hover:from-green-700 hover:to-cyan-700", 
+        "hover:from-green-700 hover:to-cyan-700",
         "shadow-lg hover:shadow-green-500/25 hover:scale-105",
+        "light:from-green-700 light:to-cyan-700",
+        "light:hover:from-green-800 light:hover:to-cyan-800",
+        "light:shadow-green-700/30",
       ),
       
       ghost: clsx(
@@ -111,6 +114,7 @@ export const components = {
       "sticky top-0 z-50 w-full",
       "border-b border-green-200/20 dark:border-green-800/20", 
       "bg-white/90 dark:bg-neutral-950/90",
+      "light:bg-blue-50/90 light:border-blue-200",
       "backdrop-blur-xl shadow-sm",
     ),
     nav: "mx-auto flex h-16 max-w-7xl items-center justify-between px-6 sm:px-8",
