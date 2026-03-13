@@ -1,0 +1,33 @@
+{
+  "name": "draftdb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "frontend/**/*.{js,jsx,ts,tsx,css}": [
+      "prettier --write"
+    ],
+    "backend/**/*.{js,ts}": [
+      "prettier --write"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nguyentansinh123/DraftDB.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/nguyentansinh123/DraftDB/issues"
+  },
+  "homepage": "https://github.com/nguyentansinh123/DraftDB#readme",
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}
