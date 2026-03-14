@@ -1,5 +1,11 @@
+import Canvas from "../components/Canvas";
+
 const Editor = () => {
-  return <div>editor page</div>;
+  return (
+    <div>
+      <Canvas />
+    </div>
+  );
 };
 
 export default Editor;
