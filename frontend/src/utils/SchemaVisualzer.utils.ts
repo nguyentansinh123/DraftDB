@@ -11,7 +11,7 @@ export const getInfoFromSchema = (
   const modelNames = modelStrings.map((modelString) => {
     return Array.from(modelString.matchAll(/model (\w+)/g))?.[0]?.[1];
   });
-  console.log(modelNames);
+  console.log({ modelNames });
 
   const parsedModels: Model[] = modelStrings.map((modelString, index) => {
     return {
@@ -29,7 +29,7 @@ export const getInfoFromSchema = (
       }),
     };
   });
-  console.log(parsedModels);
+  console.log({ parsedModels });
 
   const connections: ModelConnection[] = [];
   parsedModels.forEach((model) => {
