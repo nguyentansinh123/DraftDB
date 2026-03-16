@@ -1,4 +1,4 @@
-import type { Schema } from "../types/CoreModelType";
+import type { Schema } from "../CoreModelType";
 
 // A blog platform schema — covers most relation types and field features
 export const mockSchema: Schema = {

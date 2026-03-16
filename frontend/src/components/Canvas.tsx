@@ -3,11 +3,14 @@ import {
   Background,
   Controls,
   BackgroundVariant,
-  // type Node,
+  type Node,
   // type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "../hooks/useTheme";
+import { extractData } from "../utils/core/CoreVisualizer.utils";
+import { mockSchema } from "../types/MockData/mockSchema";
+import ModelNode from "./modelNodes/ModelNode";
 // import { getInfoFromSchema } from "../utils/SchemaVisualzer.utils";
 // import { schema } from "../data/SchemaVisualizer.constants";
 // import ModelNode from "./modelNodes/ModelNode";
@@ -46,6 +49,22 @@ import { useTheme } from "../hooks/useTheme";
 //   };
 // });
 
+const nodeTypes_1 = {
+  model1: ModelNode,
+};
+
+const { nodes } = extractData(mockSchema);
+const models: Node[] = nodes.map((model) => {
+  console.log("nnnn");
+  console.log(model);
+  return {
+    id: model.modelName,
+    position: { x: 0, y: 0 },
+    data: model as unknown as Record<string, unknown>,
+    type: "model1",
+  };
+});
+
 const Canvas = () => {
   const { theme } = useTheme();
 
@@ -55,6 +74,8 @@ const Canvas = () => {
         // defaultNodes={nodes}
         // defaultEdges={edges}
         // nodeTypes={modelTypes}
+        nodeTypes={nodeTypes_1}
+        defaultNodes={models}
         fitView
         colorMode={theme == "dark" ? "dark" : "light"}
       >
