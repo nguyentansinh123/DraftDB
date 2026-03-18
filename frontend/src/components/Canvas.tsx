@@ -4,13 +4,23 @@ import {
   Controls,
   BackgroundVariant,
   type Node,
+  useNodesState,
+  useEdgesState,
+  type Edge,
+  addEdge,
+  type Connection,
+  ConnectionMode,
   // type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useTheme } from "../hooks/useTheme";
-import { extractData } from "../utils/core/CoreVisualizer.utils";
+import {
+  extractData,
+  type TableNode,
+} from "../utils/core/CoreVisualizer.utils";
 import { mockSchema } from "../types/MockData/mockSchema";
 import ModelNode from "./modelNodes/ModelNode";
+import { useCallback, useState } from "react";
 // import { getInfoFromSchema } from "../utils/SchemaVisualzer.utils";
 // import { schema } from "../data/SchemaVisualizer.constants";
 // import ModelNode from "./modelNodes/ModelNode";
@@ -53,10 +63,9 @@ const nodeTypes_1 = {
   model1: ModelNode,
 };
 
-const { nodes } = extractData(mockSchema);
+// edges
+const { nodes, edges } = extractData(mockSchema);
 const models: Node[] = nodes.map((model) => {
-  console.log("nnnn");
-  console.log(model);
   return {
     id: model.modelName,
     position: { x: 0, y: 0 },
@@ -65,8 +74,29 @@ const models: Node[] = nodes.map((model) => {
   };
 });
 
+const edgeEdgeType: Edge[] = edges.map((edge) => {
+  return {
+    id: edge.id,
+    source: edge.fromModel,
+    target: edge.toModel,
+    sourceHandle: edge.fromField,
+    targetHandle: `${edge.toField}-target`,
+    type: "bezier",
+  };
+});
+
 const Canvas = () => {
   const { theme } = useTheme();
+
+  const [nodesState, _, onNodesChange] = useNodesState(models);
+  const [edgeState, setEdgeState, onEdgeChange] =
+    useEdgesState<Edge>(edgeEdgeType);
+  const onConnect = useCallback(
+    (connection: Connection) => {
+      setEdgeState((oldEdges) => addEdge(connection, oldEdges));
+    },
+    [setEdgeState],
+  );
 
   return (
     <div style={{ width: "100vw", height: "calc(100vh - 4rem)" }}>
@@ -74,8 +104,14 @@ const Canvas = () => {
         // defaultNodes={nodes}
         // defaultEdges={edges}
         // nodeTypes={modelTypes}
+        //defaultNodes={models}
         nodeTypes={nodeTypes_1}
-        defaultNodes={models}
+        nodes={nodesState}
+        edges={edgeState}
+        // onConnect={onConnect}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgeChange}
+        connectionMode={ConnectionMode.Strict}
         fitView
         colorMode={theme == "dark" ? "dark" : "light"}
       >

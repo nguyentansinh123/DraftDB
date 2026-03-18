@@ -401,22 +401,30 @@ export const mockSchema: Schema = {
       isOptional: true,
     },
 
-    // Post <--many:many--> Tag  (via PostTag)
+    // PostTag.postId -> Post.id
     {
-      name: "postTags",
-      fromModel: "Post",
-      fromField: "id",
-      toModel: "Tag",
+      name: "postTagPost",
+      fromModel: "PostTag",
+      fromField: "postId",
+      toModel: "Post",
       toField: "id",
-      type: "many-to-many",
+      type: "many-to-one",
       onDelete: "CASCADE",
       onUpdate: "CASCADE",
       isOptional: false,
-      junction: {
-        tableName: "post_tags",
-        fromForeignKey: "postId",
-        toForeignKey: "tagId",
-      },
+    },
+
+    // PostTag.tagId -> Tag.id
+    {
+      name: "postTagTag",
+      fromModel: "PostTag",
+      fromField: "tagId",
+      toModel: "Tag",
+      toField: "id",
+      type: "many-to-one",
+      onDelete: "CASCADE",
+      onUpdate: "CASCADE",
+      isOptional: false,
     },
   ],
 };
