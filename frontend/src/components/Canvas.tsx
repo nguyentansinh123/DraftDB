@@ -10,6 +10,9 @@ import {
   addEdge,
   type Connection,
   ConnectionMode,
+  useReactFlow,
+  Panel,
+  MiniMap,
   // type Edge,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
@@ -21,6 +24,13 @@ import {
 import { mockSchema } from "../types/MockData/mockSchema";
 import ModelNode from "./modelNodes/ModelNode";
 import { useCallback, useState } from "react";
+import { getLayoutedElements } from "../layout/Darge/BasicLayout";
+import { getElkLayoutedElements } from "../layout/Elk/ElkLayout"; // Import the new layout
+import {
+  SmartBezierEdge,
+  SmartStepEdge,
+  SmartStraightEdge,
+} from "@jalez/react-flow-smart-edge";
 // import { getInfoFromSchema } from "../utils/SchemaVisualzer.utils";
 // import { schema } from "../data/SchemaVisualizer.constants";
 // import ModelNode from "./modelNodes/ModelNode";
@@ -62,6 +72,9 @@ import { useCallback, useState } from "react";
 const nodeTypes_1 = {
   model1: ModelNode,
 };
+const edgeTypes = {
+  smart: SmartBezierEdge,
+};
 
 // edges
 const { nodes, edges } = extractData(mockSchema);
@@ -81,15 +94,17 @@ const edgeEdgeType: Edge[] = edges.map((edge) => {
     target: edge.toModel,
     sourceHandle: edge.fromField,
     targetHandle: `${edge.toField}-target`,
-    type: "bezier",
+    type: "smart",
   };
 });
 
 const Canvas = () => {
   const { theme } = useTheme();
 
-  const [nodesState, _setNodesState, onNodesChange] = useNodesState(models);
-  const [edgeState, _setEdgeState, onEdgeChange] =
+  const { fitView } = useReactFlow();
+
+  const [nodesState, setNodesState, onNodesChange] = useNodesState(models);
+  const [edgeState, setEdgeState, onEdgeChange] =
     useEdgesState<Edge>(edgeEdgeType);
   // const onConnect = useCallback(
   //   (connection: Connection) => {
@@ -97,6 +112,31 @@ const Canvas = () => {
   //   },
   //   [setEdgeState],
   // );
+
+  console.log("edgeEdgeType", edgeEdgeType);
+  console.log(edgeState);
+
+  const onLayout = (direction: "TB" | "LR" | "BT" | "RL") => {
+    // console.log(nodesState.map(n => n.measured))
+    const layouted = getLayoutedElements(nodesState, edgeState, { direction });
+    setNodesState([...layouted.nodes]);
+    setEdgeState([...layouted.edges]);
+    fitView();
+  };
+
+  // New function for ELK
+  const onElkLayout = useCallback(
+    async (direction: "TB" | "LR" | "BT" | "RL") => {
+      const layouted = await getElkLayoutedElements(nodesState, edgeState, {
+        direction,
+      });
+      setNodesState([...layouted.nodes]);
+      setEdgeState([...layouted.edges]);
+      // ELK is async, wait a tick for React Flow to update state before fitting view
+      setTimeout(() => window.requestAnimationFrame(() => fitView()), 10);
+    },
+    [nodesState, edgeState, fitView, setNodesState, setEdgeState],
+  );
 
   return (
     <div style={{ width: "100vw", height: "calc(100vh - 4rem)" }}>
@@ -107,6 +147,7 @@ const Canvas = () => {
         //defaultNodes={models}
         nodeTypes={nodeTypes_1}
         nodes={nodesState}
+        edgeTypes={edgeTypes}
         edges={edgeState}
         // onConnect={onConnect}
         onNodesChange={onNodesChange}
@@ -120,6 +161,22 @@ const Canvas = () => {
           variant={BackgroundVariant.Dots}
         />
         <Controls />
+        <Panel position="top-right">
+          {/* Existing Dagre Buttons */}
+          <div style={{ display: "flex", gap: "10px", marginBottom: "10px" }}>
+            <span>Dagre: </span>
+            <button onClick={() => onLayout("TB")}>Vertical</button>
+            <button onClick={() => onLayout("LR")}>Horizontal</button>
+          </div>
+
+          {/* New ELK Buttons */}
+          <div style={{ display: "flex", gap: "10px" }}>
+            <span>ELK: </span>
+            <button onClick={() => onElkLayout("TB")}>Vertical</button>
+            <button onClick={() => onElkLayout("LR")}>Horizontal</button>
+          </div>
+        </Panel>
+        <MiniMap />
       </ReactFlow>
     </div>
   );
