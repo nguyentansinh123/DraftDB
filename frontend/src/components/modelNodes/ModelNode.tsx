@@ -4,7 +4,9 @@ import ToolTips from "./ToolTips";
 
 const ModelNode = ({ data }: NodeProps<Node<TableNode>>) => {
   {
-    console.log(data);
+    console.log("log from model");
+
+    console.log(data.fields);
   }
   return (
     <div className="rounded-lg min-w-[250px] bg-white dark:bg-zinc-800 shadow-md border border-gray-200 dark:border-zinc-700">
