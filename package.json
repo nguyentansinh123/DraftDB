@@ -28,6 +28,7 @@
   },
   "homepage": "https://github.com/nguyentansinh123/DraftDB#readme",
   "devDependencies": {
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "prettier": "^3.8.1"
   }
 }

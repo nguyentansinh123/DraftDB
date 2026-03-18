@@ -1,4 +1,4 @@
-import type { Node, NodeProps } from "@xyflow/react";
+import { Handle, Position, type Node, type NodeProps } from "@xyflow/react";
 import type { TableNode } from "../../utils/core/CoreVisualizer.utils";
 import ToolTips from "./ToolTips";
 
@@ -19,6 +19,13 @@ const ModelNode = ({ data }: NodeProps<Node<TableNode>>) => {
           key={field.name}
           className="group relative z-10 hover:z-1000 flex justify-between px-3 py-1 border-t border-gray-200 dark:border-zinc-700 text-sm"
         >
+          <Handle id={field.name} type="source" position={Position.Left} />
+          <Handle
+            id={`${field.name}-target`}
+            type="target"
+            position={Position.Right}
+          />
+
           <span className="dark:text-white">{field.name}</span>
           <div className="flex items-center gap-2">
             {field.isPrimary && (
