@@ -65,10 +65,10 @@ const nodeTypes_1 = {
 
 // edges
 const { nodes, edges } = extractData(mockSchema);
-const models: Node[] = nodes.map((model) => {
+const models: Node[] = nodes.map((model, index) => {
   return {
     id: model.modelName,
-    position: { x: 0, y: 0 },
+    position: { x: (index % 4) * 400, y: Math.floor(index / 4) * 400 },
     data: model as unknown as Record<string, unknown>,
     type: "model1",
   };
@@ -88,15 +88,15 @@ const edgeEdgeType: Edge[] = edges.map((edge) => {
 const Canvas = () => {
   const { theme } = useTheme();
 
-  const [nodesState, _, onNodesChange] = useNodesState(models);
-  const [edgeState, setEdgeState, onEdgeChange] =
+  const [nodesState, _setNodesState, onNodesChange] = useNodesState(models);
+  const [edgeState, _setEdgeState, onEdgeChange] =
     useEdgesState<Edge>(edgeEdgeType);
-  const onConnect = useCallback(
-    (connection: Connection) => {
-      setEdgeState((oldEdges) => addEdge(connection, oldEdges));
-    },
-    [setEdgeState],
-  );
+  // const onConnect = useCallback(
+  //   (connection: Connection) => {
+  //     setEdgeState((oldEdges) => addEdge(connection, oldEdges));
+  //   },
+  //   [setEdgeState],
+  // );
 
   return (
     <div style={{ width: "100vw", height: "calc(100vh - 4rem)" }}>
